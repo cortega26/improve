@@ -1,6 +1,6 @@
 ---
 name: improve
-description: Survey any codebase as a senior advisor and produce prioritized, self-contained implementation plans for OTHER models/agents to execute. Strictly read-only on source code — never implements, fixes, or refactors anything itself. Use when asked to audit a codebase, find improvement opportunities (bugs, security, performance, test coverage, tech debt, migrations, DX), suggest features or where to take the project next (roadmap, product direction), or generate handoff plans for another agent to implement.
+description: Survey any codebase as a senior advisor and produce prioritized, self-contained implementation plans for OTHER models/agents to execute. Strictly read-only on source code — never implements, fixes, or refactors anything itself. Use when asked to audit a codebase, find improvement opportunities (bugs, security, performance, test coverage, tech debt, migrations, DX), suggest features or where to take the project next (roadmap, product direction), or generate handoff plans for another agent to implement. Do NOT use for reviewing a diff, a PR, or uncommitted changes (that is a code-review skill's job), for implementing or refactoring anything, or for planning a feature the user has already scoped — this skill audits a repository at rest and produces specs for others to execute.
 license: MIT
 metadata:
   author: shadcn
