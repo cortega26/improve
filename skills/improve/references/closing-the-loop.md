@@ -84,10 +84,31 @@ Running verification commands inside the executor's worktree is fine — it's is
 
 Process what happened since the last session. Read `plans/README.md` and every plan file, then per status:
 
-- **DONE** — spot-check that the done criteria still hold on the current HEAD (cheap ones only). Mark verified in the index. Don't delete plan files — they're the record.
+- **DONE** — spot-check that the done criteria still hold on the current HEAD (cheap ones only). Mark verified in the index. Don't delete plan files — they're the record. Then read the plan's "Maintenance notes" and collect every `**Deferred:**` line — see "Harvest the deferrals" below.
 - **BLOCKED** — read the reason. Investigate the underlying obstacle in the codebase. Either rewrite the plan around it (new number if the approach changed fundamentally, in-place refresh otherwise) or mark REJECTED with one line of rationale.
 - **IN PROGRESS** (stale) — flag it to the user; an executor probably died mid-run. Check the worktree if one exists.
 - **TODO** — run the drift check. If drifted: re-verify the finding still exists (it may have been fixed in passing), then refresh the "Current state" excerpts and `Planned at` SHA. If the finding is gone, mark REJECTED ("fixed independently").
+
+### Harvest the deferrals
+
+The maintenance notes are where the advisor deliberately parked work, and
+nothing else in this flow reads them. After walking the statuses, collect every
+`**Deferred:**` line from the plans now marked DONE and decide each one:
+
+- **Unblocked** — whatever it was waiting on has landed. Report it as
+  executable work, with the plan and line it came from. If it is substantial,
+  it earns its own plan on the next planning run; if it is a one-line cleanup,
+  say so and let the user decide.
+- **Still blocked** — name what it is waiting on, and carry it forward. A
+  deferral blocked on a plan that was later REJECTED is not blocked any more —
+  it is dead; say so and drop it.
+- **Overtaken** — the codebase moved and the deferral no longer applies. Say
+  that plainly rather than leaving it to be re-read every session.
+
+Deferrals blocking each other are common and worth checking for explicitly: two
+plans that each deferred the same consolidation "because the other one was
+editing that file" are both unblocked the moment both are DONE, and neither
+plan's own notes will say so.
 
 Finish with a short report: what's verified done, what was refreshed, what's rejected, and what's executable right now.
 
