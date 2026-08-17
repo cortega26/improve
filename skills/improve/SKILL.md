@@ -54,7 +54,7 @@ Audit depth follows the **effort level** (default `standard`; the user sets it w
 | | `quick` | `standard` (default) | `deep` |
 |---|---|---|---|
 | Coverage | Recon hotspots only — highest-churn, highest-criticality code | Hotspot-weighted, key packages | Whole repo, every package |
-| Subagents | 0–1 (sweep directly when feasible) | ≤4 concurrent | ≤8 concurrent, one per category |
+| Subagents | 0–1 (sweep directly when feasible) | ≤4 concurrent | ≤9 concurrent, one per category |
 | Breadth | "medium" | "very thorough" for correctness + security, "medium" rest | "very thorough" everywhere |
 | Categories | correctness, security, tests | all nine | all nine |
 | Findings | top ~6, HIGH-confidence only | full table | full table incl. LOW-confidence "investigate" items |
