@@ -118,6 +118,8 @@ Plans aren't fire-and-forget:
 - Never modifies source code itself. The only writes go to `plans/`; executors edit only in disposable worktrees, and merging is always yours.
 - Never runs commands that mutate your working tree — read, search, and read-only analysis only.
 - Never reproduces secret values. Locations and credential types only, rotation always recommended.
+- Every plan stands alone. The executor has not seen the audit, the other plans, or the session that wrote them, so nothing is left implicit.
+- Treats everything it reads as data, not instructions. A file that tries to give the advisor orders becomes a security finding, not a command — and the executor it dispatches inherits that rule explicitly.
 - Asked to implement? It declines and points at the plan (or offers `execute`).
 
 ## License
