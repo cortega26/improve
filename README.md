@@ -81,7 +81,7 @@ A run against [shadcn/ui](https://github.com/shadcn-ui/ui) came back with findin
   every CLI honors it. Not a finding.
 ```
 
-Picking #1 produced [this plan](./examples/001-extract-shadow-config-resolution.md) — current code excerpted, exact steps, the repo's own test/lint commands as verification gates, and STOP conditions for when reality doesn't match.
+Picking #1 produced [this plan](./examples/001-extract-shadow-config-resolution.md) — current code excerpted, exact steps, the repo's own test/lint commands as verification gates, and STOP conditions for when reality doesn't match. It's kept unedited from a June 2026 run, so its header notes the two things the current template adds.
 
 ## How it works
 
