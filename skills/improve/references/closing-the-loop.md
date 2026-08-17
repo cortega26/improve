@@ -61,10 +61,10 @@ Note on fresh worktrees: they share git history but not `node_modules` or build 
 
 Review like a tech lead reviewing a PR against the spec — never fix anything yourself:
 
-1. **Re-run every done criterion** in the worktree. Don't trust the executor's report — verify.
-2. **Scope compliance**: `git -C <worktree> diff --stat` against the plan's in-scope list. Any file outside scope fails review, full stop.
-3. **Read the full diff.** Judge it against "Why this matters" (does it solve the actual problem?) and the repo conventions named in the plan (does it look like the rest of the codebase?).
-4. **Audit the new tests.** Executors game criteria — a test that asserts nothing meaningful passes `pnpm test` and proves nothing. Read what the tests assert.
+1. **Scope compliance**: `git -C <worktree> diff --stat` against the plan's in-scope list. Any file outside scope fails review, full stop. This runs nothing — do it first.
+2. **Read the full diff.** Judge it against "Why this matters" (does it solve the actual problem?) and the repo conventions named in the plan (does it look like the rest of the codebase?). Nothing the executor wrote gets executed until you have read it.
+3. **Audit the new tests.** Executors game criteria — a test that asserts nothing meaningful passes `pnpm test` and proves nothing. Read what the tests assert, and read any new script or config the diff adds before it runs.
+4. **Re-run every done criterion** in the worktree. Don't trust the executor's report — verify. By now you have read everything you are about to execute.
 
 ### Verdict
 
