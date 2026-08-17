@@ -156,7 +156,11 @@ Machine-checkable. ALL must hold:
 - [ ] `pnpm typecheck` exits 0
 - [ ] `pnpm test` exits 0; new tests for <X> exist and pass
 - [ ] `grep -rn "<old pattern>" src/` returns no matches
-- [ ] No files outside the in-scope list are modified (`git status`)
+- [ ] `git diff --name-only <base-branch>...HEAD` lists only the in-scope files
+      (three dots — compares against the merge base, so it still holds if other
+      work landed on the base branch meanwhile). `git status` is not a scope
+      check here: this plan tells you to commit, and committed work leaves it
+      clean.
 - [ ] `plans/README.md` status row updated
 
 ## STOP conditions
