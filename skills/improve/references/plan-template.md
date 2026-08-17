@@ -183,7 +183,11 @@ For the human/agent who owns this code after the change lands:
 - What future changes will interact with this (e.g. "if pagination is added
   to this endpoint, the batching in step 2 must be revisited").
 - What a reviewer should scrutinize in the PR.
-- Any follow-up explicitly deferred out of this plan (and why).
+- Any follow-up explicitly deferred out of this plan. Write each one on its own
+  line starting with `**Deferred:**` so `reconcile` can find it later, and name
+  what unblocks it — another plan, a decision, or "nothing, it just wasn't worth
+  doing now". A deferral nobody can test for is a deferral nobody will ever
+  action.
 ```
 
 ---
