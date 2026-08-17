@@ -85,7 +85,7 @@ Picking #1 produced [this plan](./examples/001-extract-shadow-config-resolution.
 
 ## How it works
 
-**Recon.** Maps the repo: stack, conventions, and the exact build/test/lint commands — these become verification gates in every plan. It also ingests intent and design docs when present — ADRs (`docs/adr/`), PRDs, `CONTEXT.md`, `DESIGN.md`, `PRODUCT.md` — so decided tradeoffs aren't re-flagged as findings, direction suggestions stay grounded in stated product intent, and plans speak the repo's own vocabulary. Composes with any repo that already maintains these docs.
+**Recon.** Maps the repo: stack, conventions, and the repo's own build/test/lint commands, each tagged with whether the advisor ran it or only read it from a manifest — these become verification gates in every plan. It also ingests intent and design docs when present — ADRs (`docs/adr/`), PRDs, `CONTEXT.md`, `DESIGN.md`, `PRODUCT.md` — so decided tradeoffs aren't re-flagged as findings, direction suggestions stay grounded in stated product intent, and plans speak the repo's own vocabulary. Composes with any repo that already maintains these docs.
 
 **Audit.** Fans out parallel subagents across nine categories: correctness, security, performance, test coverage, tech debt, dependencies & migrations, DX, docs, and direction (feature suggestions — every one must cite evidence from the repo itself, no generic idea-slop). Every finding carries `file:line` evidence, impact, effort, and confidence.
 
@@ -99,8 +99,8 @@ Picking #1 produced [this plan](./examples/001-extract-shadow-config-resolution.
 
 Plans are written for the weakest plausible executor — a model that has never seen the advisor session and may be much smaller. Three properties carry that:
 
-- **Self-contained.** All context is inlined: exact file paths, current-state code excerpts, repo conventions with an exemplar file, verified commands. No "as discussed above."
-- **Verification gates.** Every step ends with a command and its expected output. Done criteria are machine-checkable. The executor never has to judge whether it succeeded.
+- **Self-contained.** All context is inlined: exact file paths, current-state code excerpts, repo conventions with an exemplar file, and the repo's own commands with their provenance recorded. No "as discussed above."
+- **Verification gates.** Every step ends with a command and its expected output. Done criteria are machine-checkable. The executor never has to judge whether it succeeded — and a plan's first step is establishing that the baseline was already green, so a pre-existing failure is never mistaken for its own.
 - **Hard boundaries.** Explicit out-of-scope lists, and STOP conditions — "if X, stop and report" — instead of letting a small model improvise when reality doesn't match the plan.
 
 Each plan also stamps the git commit it was written against, so executors run a mechanical drift check before touching anything.
