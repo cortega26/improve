@@ -64,14 +64,20 @@ The facts the executor needs, inlined — never "as discussed" or "see audit":
 
 ## Commands you will need
 
-| Purpose   | Command                  | Expected on success |
-|-----------|--------------------------|---------------------|
-| Install   | `pnpm install`           | exit 0              |
-| Typecheck | `pnpm typecheck`         | exit 0, no errors   |
-| Tests     | `pnpm test -- <filter>`  | all pass            |
-| Lint      | `pnpm lint`              | exit 0              |
+| Purpose   | Command                  | Provenance | Expected on success |
+|-----------|--------------------------|------------|---------------------|
+| Install   | `pnpm install`           | declared   | exit 0              |
+| Typecheck | `pnpm typecheck`         | declared   | exit 0, no errors   |
+| Tests     | `pnpm test -- <filter>`  | declared   | all pass            |
+| Lint      | `pnpm lint`              | executed   | exit 0              |
 
-(Exact commands from this repo — verified during recon, not guessed.)
+**Provenance** is not decoration — it tells you how much to trust the row.
+`executed` means the advisor ran this command during recon and saw it work.
+`declared` means the advisor read it from `package.json`, a Makefile, or the CI
+config but could not run it: the advisor is forbidden from installing
+dependencies in the user's tree, so on a repo whose toolchain was not already
+installed, most rows will be `declared`. A `declared` command that fails is not
+automatically your mistake — see Step 0.
 
 ## Suggested executor toolkit
 
