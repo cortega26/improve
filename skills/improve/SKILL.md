@@ -104,6 +104,8 @@ Write each plan **for the weakest plausible executor**. That means:
 
 Finish by writing `plans/README.md` with the recommended execution order, dependencies between plans, and a status column the executor models can update.
 
+**Tell the user to commit `plans/`.** Three downstream flows assume it is versioned: `execute` can only hand the worktree committed files, every plan's drift check diffs against its `Planned at` SHA, and `reconcile` reads the index as the record of what happened. A gitignored `plans/` fails all three silently. If the repo's ignore rules would exclude it, say so when you present the plans.
+
 ## Invocation variants
 
 - Bare invocation → full workflow above.
