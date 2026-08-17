@@ -16,7 +16,7 @@ listada más abajo como candidatos sin planificar todavía.
 | Plan | Título | Prioridad | Esfuerzo | Riesgo | Depende de | Estado |
 |------|--------|-----------|----------|--------|------------|--------|
 | 001 | Hard Rules 4+6 al executor; leer el diff antes de ejecutarlo | P1 | S | LOW | — | DONE (mergeado en `main` en `16aa72a`) |
-| 002 | Procedencia de comandos (`declared`/`executed`) + Paso 0 de bootstrap | P1 | S | LOW | — | TODO |
+| 002 | Procedencia de comandos (`declared`/`executed`) + Paso 0 de bootstrap | P1 | S | LOW | — | DONE (mergeado en `main` en `c8b3085`) |
 | 003 | Declarar cuándo NO usar la skill | P2 | S | MED | — | TODO |
 | 004 | Off-by-one, marketplace, `plans/` versionado, remote `origin` | P2 | S | LOW | — | TODO |
 | 005 | Sincronizar la copia instalada de la skill | P1 | S | LOW | 001-004 | TODO |
