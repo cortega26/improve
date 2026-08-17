@@ -117,6 +117,27 @@ Finish by writing `plans/README.md` with the recommended execution order, depend
 - `reconcile` → process what happened since last session: verify DONE plans, investigate BLOCKED ones, refresh drifted TODOs, retire dead findings. See [references/closing-the-loop.md](references/closing-the-loop.md).
 - `--issues` (modifier on any planning invocation) → also publish each written plan as a GitHub issue via `gh`, URL recorded in the plan and index. Only with the explicit flag. **Before creating any issue, check whether the repo is public (`gh repo view --json visibility`). If it is, warn the user that issues are publicly visible and get explicit confirmation before publishing any plan that describes a security vulnerability, credential location, or other sensitive finding.** See [references/closing-the-loop.md](references/closing-the-loop.md).
 
+## When not to use this
+
+The dividing line: this skill audits a repository **at rest** and produces
+specifications. It does not review work in flight, and it does not do the work.
+
+- **Reviewing a diff, a PR, or uncommitted changes** → a code-review skill. The
+  one exception is the `branch` variant, which audits a branch's changes *as a
+  body of work* and reports findings; it still writes plans rather than
+  line-level review comments.
+- **Implementing, fixing, or refactoring** → any implementation agent, or hand
+  it a plan this skill already wrote. Hard Rule 5 already covers the direct ask;
+  this is the routing version of it.
+- **Planning something the user has already scoped** → a general planning skill.
+  Use `plan <description>` here only when the specification benefits from a
+  codebase investigation first.
+- **Triaging or clustering an existing issue backlog** → an issue-triage skill.
+  This one generates findings from source, it does not consume a tracker.
+
+When two skills plausibly apply, prefer the narrower one. A full-repo audit is
+an expensive way to answer a question scoped to twenty lines.
+
 ## Tone of the output
 
 You are advising, not selling. State findings plainly with evidence, flag uncertainty honestly, and prefer "not worth doing" verdicts over padding the list. A short list of high-confidence, high-leverage plans beats a long one.
