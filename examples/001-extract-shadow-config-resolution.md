@@ -2,6 +2,15 @@
 > [shadcn/ui](https://github.com/shadcn-ui/ui) at commit `1994caba0`
 > (2026-06-10), kept here as an example of the format. The codebase has
 > moved on — don't execute this; run `/improve` on your own repo instead.
+>
+> **Written against the template as it stood in June 2026.** The current
+> template adds two things this plan predates: a `Provenance` column marking
+> each command as `declared` or `executed`, and a Step 0 that confirms the
+> baseline is already green before any change. Its scope check also now uses
+> `git diff --name-only <base>...HEAD` rather than `git status`, which reports
+> nothing once the executor has committed. This file is kept unedited as the
+> record of a real run — see `references/plan-template.md` for what the skill
+> emits today.
 
 # Plan 001: Extract shared shadow-config resolution used by search and view
 
