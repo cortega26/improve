@@ -109,6 +109,24 @@ executor's environment. Skip the section otherwise.)
 
 ## Steps
 
+### Step 0: Establish a green baseline
+
+Before changing anything, get the toolchain working and confirm the repo is
+already healthy. Run the `Install` row, then every other command in the table
+*as it exists on an unmodified checkout*.
+
+- If they all pass: record that, and proceed to Step 1.
+- If a `declared` command does not exist or fails on the unmodified checkout:
+  that is a broken or mis-recorded baseline, not something you introduced.
+  **STOP and report it** — include the command and its exact output. Do not
+  "fix" the build to get moving, and do not proceed with a red baseline: you
+  would have no way to tell your own regressions from pre-existing ones.
+- If an `executed` command fails: the repo drifted since this plan was written.
+  Treat it as a drift STOP condition.
+
+**Verify**: every command in the table above runs and matches its expected
+result on the unmodified checkout.
+
 ### Step 1: <imperative title>
 
 What to do, precisely. Reference exact files/symbols. Include the target code
