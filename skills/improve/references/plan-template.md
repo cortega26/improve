@@ -222,3 +222,7 @@ Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) | REJE
 - Would a reviewer reading only "Why this matters" + "Done criteria" understand what they're approving?
 - No secret values anywhere in the file — locations and credential types only.
 - "Planned at" SHA is filled in and the in-scope paths in the drift check match the Scope section.
+- Does every row in the command table carry a `Provenance` value, and is
+  `executed` claimed only for commands actually run during recon? A `declared`
+  row is honest; a false `executed` is how an executor ends up debugging the
+  advisor's guess.
