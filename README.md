@@ -34,6 +34,15 @@ Works in any agent that supports [Agent Skills](https://agentskills.io) format. 
 /improve ... --issues           also publish plans as GitHub issues
 ```
 
+## When not to use it
+
+`improve` audits a repository at rest and writes specs. For reviewing a diff or
+a PR, use a code-review skill. For implementing, use an implementation agent —
+or hand it one of the plans this wrote. For planning something you have already
+scoped, a general planning skill is cheaper. `improve branch` is the one
+in-flight case, and even there the output is findings and plans, not line
+comments.
+
 ## How to use
 
 A typical first run, start to finish:
