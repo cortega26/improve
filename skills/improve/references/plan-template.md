@@ -168,6 +168,9 @@ Stop and report back (do not improvise) if:
 - A step's verification fails twice after a reasonable fix attempt.
 - The fix appears to require touching an out-of-scope file.
 - You discover the assumption "<key assumption>" is false.
+- A command marked `declared` in the table does not exist or fails on an
+  unmodified checkout (Step 0) — the baseline is broken; report it rather than
+  repairing it.
 
 ## Maintenance notes
 
