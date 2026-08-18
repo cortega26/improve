@@ -1,4 +1,4 @@
-# Eval suite for the `improve` skill
+# Eval suite for the `improve-cortega26` skill
 
 Behavioral tests for the skill's routing (does it trigger on the right
 requests and stay silent on the wrong ones) and, eventually, its adherence
