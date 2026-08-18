@@ -1,7 +1,7 @@
 ---
 type: tool_used
 tool: Skill
-input_match: '"skill"\s*:\s*"(?:[\w-]+:)?improve"'
+input_match: '"skill"\s*:\s*"(?:[\w-]+:)?improve-cortega26"'
 min: 0
 max: 0
 ---

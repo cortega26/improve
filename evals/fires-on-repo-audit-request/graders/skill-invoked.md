@@ -1,7 +1,7 @@
 ---
 type: tool_used
 tool: Skill
-input_match: '"skill"\s*:\s*"(?:[\w-]+:)?improve"'
+input_match: '"skill"\s*:\s*"(?:[\w-]+:)?improve-cortega26"'
 min: 1
 ---
 A full-repo audit request naming multiple of the skill's stated categories
