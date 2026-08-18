@@ -322,6 +322,63 @@ matcher aparte de tool/evento), reabrir este candidato — en ese momento sí
 sería viable un hook con alcance correcto y sin bloquear el uso normal del
 plugin.
 
+## Nota sobre 014 — aprobado, un hallazgo nuevo fuera de alcance
+
+Worktree cortado contra `8455800` (el mismo problema sistémico), pero esta
+vez sin siquiera necesitar decidir sobre overlap: `git log main..HEAD` en el
+worktree dio cero commits divergentes, así que el rebase fue un
+fast-forward puro, sin nada que reproducir. El propio executor lo señaló
+como una condición aún más fuerte que la heurística de "sin overlap de
+archivos" que autoriza el auto-saneo — correcto.
+
+Alcance limpio: `git diff --name-only main...HEAD` listó exactamente los 6
+archivos del plan, nada más. Los 8 criterios de done se re-verificaron de
+forma independiente (no solo el autorreporte) contra el worktree y de nuevo
+contra `main` después del merge fast-forward (`4d80e51`) — ambas veces en
+verde, incluyendo `claude plugin validate . --strict`.
+
+**Una decisión de juicio del executor, correcta**: el paso 5 del plan citaba
+las líneas 46 y 49 del README como parte del renombre, pero el texto
+"Current state" del propio plan mostraba esas dos líneas con `` `improve` ``
+entre backticks, sin la barra inicial — no había un `/improve` literal ahí
+para reemplazar mecánicamente. El executor renombró igual el token
+`improve` suelto en ambas líneas, razonando que la intención evidente del
+plan (el renombre de identidad) cubría esas dos menciones aunque el texto
+literal de la instrucción no calzara con el texto literal de la fuente.
+Revisado: correcto, es exactamente lo que "Documented deviations are judged
+on merit" pide — una desviación documentada, mínima, a favor de la intención
+del plan.
+
+**Hallazgo nuevo, fuera de alcance de este plan, verificado por mí**: los
+graders de la suite de evals (plan 011) usan un regex que ya no reconoce el
+nombre nuevo:
+- `evals/fires-on-repo-audit-request/graders/skill-invoked.md:4` y
+  `evals/does-not-fire-on-code-review-request/graders/no-skill-invocation.md:4`
+  ambos traen `input_match: '"skill"\s*:\s*"(?:[\w-]+:)?improve"'` — ancla en
+  el sufijo literal `improve"`, que ya no matchea `"skill": "improve-cortega26"`.
+  Efecto: el grader **positivo** (`fires-on-repo-audit-request`) dejaría de
+  reconocer una invocación correcta (falso negativo); el **negativo**
+  (`does-not-fire-on-code-review-request`, que espera `min: 0, max: 0`)
+  seguiría "pasando" pero por la razón equivocada — el regex roto nunca
+  matchea nada, así que no detectaría una regresión real si el skill
+  empezara a dispararse cuando no debería.
+- `evals/README.md:1` y menciones de prosa en `plan-template.md:202` /
+  `closing-the-loop.md:124` también quedan con el nombre viejo, pero son
+  texto descriptivo, no lógica ejecutable — impacto cosmético, no funcional.
+
+Impacto práctico hoy: cero — la suite entera sigue bloqueada por early
+access (plan 011), nadie la corre. Pero es un defecto real y barato de
+arreglar (2-3 líneas), causado directamente por 014. No se expandió el
+alcance de 014 para incluirlo (`evals/` nunca estuvo en su lista de
+archivos en alcance, y expandir alcance retroactivamente en revisión no es
+la disciplina de este proyecto) — queda registrado aquí como candidato a un
+plan 015 chico, a decidir con el usuario.
+
+**Deferred:** actualizar el regex de ambos graders (y opcionalmente el
+título de `evals/README.md`) para reconocer `improve-cortega26` en vez de
+(o además de) `improve`, en cuanto se escriba el próximo plan chico —
+desbloqueado ahora mismo, no depende de nada más.
+
 ## Orden recomendado para la fase B
 
 Los tres son independientes y de esfuerzo S. Sugerencia: **006 primero** (es el
@@ -350,14 +407,20 @@ compitiendo — la condición de STOP nº3 del plan 005 no aplicaba. El texto de
 plan 005 sigue citando `~/.claude/skills/` porque se escribió antes de conocer
 esa disposición; es un plan DONE y queda como registro histórico.
 
-## Fase C — candidatos, todavía sin planificar
+## Fase C — candidatos, cerrada
 
-Si se confirma el fork público diferenciado, estos son los planes a escribir. El
-orden importa: la CI primero, porque es lo que impide que las correcciones de
-001-004 se vuelvan a romper en el próximo merge.
+Los seis candidatos originales quedaron resueltos: 009-012 y 014 **DONE**,
+013 **DESCARTADO** (investigado, no viable — ver su Nota). El orden elegido
+—CI primero— cumplió su propósito: 009 aterrizó antes que todo lo demás,
+así que ninguna corrección de 001-004 se volvió a romper en el camino.
 
 Numeración: las fases A y B consumieron 001-008, así que los candidatos
-arrancan en 009.
+arrancaron en 009.
+
+Un hallazgo nuevo emergió de la ejecución de 014 (ver su Nota): los graders
+de `evals/` (plan 011) quedaron con un regex que no reconoce el nombre
+renombrado. Candidato a un plan 015 chico — sin decidir todavía con el
+usuario.
 
 | # | Candidato | Por qué es fase C |
 |---|---|---|
@@ -366,7 +429,7 @@ arrancan en 009.
 | 011 | Suite de evals propia | **DONE** (mergeado en `main` en `a6ae18a`). CI extendida con `claude plugin validate --strict`; esqueleto de `evals/` escrito pero **no verificado** (gate de early access) — ver Notas |
 | 012 | Política de versionado y release; bump coordinado `plugin.json` ↔ frontmatter | **DONE** (mergeado en `main` en `b752b55`). Bump a `1.1.0` en ambos archivos, sección `## Versioning` en README — ver Notas |
 | 013 | Refuerzo mecánico de "nunca edita código" (hook `PreToolUse`) | **DESCARTADO** — investigado, no viable: los hooks no pueden condicionarse a qué skill está activa, en ningún punto de despliegue (repo-local, global, ni hook embebido en el plugin) — ver Notas |
-| 014 | Renombre y posicionamiento del fork | **TODO** — plan escrito (`plans/014-renombrar-y-posicionar-el-fork.md`), pendiente de despacho. Nombre confirmado con el usuario: `improve-cortega26`. Incluye un fix a `scripts/check.py` (check1 hardcodeaba el literal `"improve"`, bloqueaba el rename) |
+| 014 | Renombre y posicionamiento del fork | **DONE** (mergeado en `main` en `4d80e51`, fast-forward). Namespace pasa a `improve-cortega26` en `plugin.json`/`marketplace.json`/`SKILL.md`; URLs a `cortega26/improve`; atribución original (`shadcn`) preservada en `author` y en `LICENSE.md`. Ver Notas |
 
 Obligación de licencia para toda la fase C: `LICENSE.md` conserva `MIT © shadcn`.
 Se **agrega** una línea de copyright propia, no se reemplaza la existente. Si se
