@@ -366,7 +366,7 @@ arrancan en 009.
 | 011 | Suite de evals propia | **DONE** (mergeado en `main` en `a6ae18a`). CI extendida con `claude plugin validate --strict`; esqueleto de `evals/` escrito pero **no verificado** (gate de early access) — ver Notas |
 | 012 | Política de versionado y release; bump coordinado `plugin.json` ↔ frontmatter | **DONE** (mergeado en `main` en `b752b55`). Bump a `1.1.0` en ambos archivos, sección `## Versioning` en README — ver Notas |
 | 013 | Refuerzo mecánico de "nunca edita código" (hook `PreToolUse`) | **DESCARTADO** — investigado, no viable: los hooks no pueden condicionarse a qué skill está activa, en ningún punto de despliegue (repo-local, global, ni hook embebido en el plugin) — ver Notas |
-| 014 | Renombre y posicionamiento del fork | `plugin.json:name` y el `name:` del frontmatter son el namespace de invocación. Ya falló en la práctica: una copia de junio en `~/.claude/skills/improve` le ganó al repo auditado |
+| 014 | Renombre y posicionamiento del fork | **TODO** — plan escrito (`plans/014-renombrar-y-posicionar-el-fork.md`), pendiente de despacho. Nombre confirmado con el usuario: `improve-cortega26`. Incluye un fix a `scripts/check.py` (check1 hardcodeaba el literal `"improve"`, bloqueaba el rename) |
 
 Obligación de licencia para toda la fase C: `LICENSE.md` conserva `MIT © shadcn`.
 Se **agrega** una línea de copyright propia, no se reemplaza la existente. Si se
@@ -379,7 +379,7 @@ Registrados para que no se re-auditen en el próximo run:
 
 - **URLs de fork en `plugin.json`** (`homepage`/`repository` apuntan a
   `shadcn/improve`): correcto mientras el fork no se posicione como proyecto
-  propio. Se revisa en el plan 010, no antes.
+  propio. Se revisa en el plan 014, no antes.
 - **`plugin.json` sin campo `skills`**: los plugins autodescubren `skills/`. No es
   un defecto.
 - **Falta `.gitignore`**: repo solo-markdown, sin artefactos de build. Costo cero.
