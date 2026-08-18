@@ -68,18 +68,17 @@ else:
         if not has_desc:
             fail("check1: SKILL.md frontmatter missing or empty 'description:' field")
 
-        # name value must be "improve"
+        # name value: non-empty is already required by has_name above.
+        # Cross-file agreement with plugin.json's name is check 2's job —
+        # this repo may be forked/renamed, so no literal value is enforced here.
         name_match = None
         for l in fm_lines:
             m = re.match(r"^name:\s+(\S.*)", l)
             if m:
                 name_match = m.group(1).strip()
                 break
-        if name_match != "improve":
-            fail(f"check1: SKILL.md frontmatter name is {name_match!r}, expected 'improve'")
-        else:
-            if has_name and has_desc:
-                ok("check1: SKILL.md frontmatter valid (name='improve', description present)")
+        if has_name and has_desc and name_match:
+            ok(f"check1: SKILL.md frontmatter valid (name={name_match!r}, description present)")
 
 # Store frontmatter name and metadata version for later checks
 _skill_name = None
