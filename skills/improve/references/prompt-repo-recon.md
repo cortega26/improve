@@ -16,9 +16,9 @@ There is no compiler to catch a broken reference and no test runner to catch a b
 
 - **Frontmatter validity** — YAML front matter parses, required fields (`name`, `description`) are present and non-empty.
 - **Manifest validity and agreement** — every manifest is well-formed (`JSON.parse` / `json.load` succeeds), and fields that are supposed to match across files actually do (a `name` repeated in `plugin.json` and the skill's frontmatter; a `version` repeated in both).
-- **Link resolution** — every relative markdown link (`[text](path)`, skipped inside fenced code blocks where they're usually illustrative, not navigational) resolves to a file that exists. A file rename silently breaks the skill for every installer if nothing catches it.
+- **Link resolution** — every relative markdown link resolves to a file that exists (links written as illustrative examples inside fenced code blocks are typically skipped by this kind of checker, since they're not real navigation). A file rename silently breaks the skill for every installer if nothing catches it.
 - **Surface parity** — every capability named in one user-facing surface (a README's usage table, a CLI help block) is also named in the entry point, and vice versa. Divergence here is the same failure class as code and its docs drifting apart, just with no compiler to force a fix.
-- **Cross-file consistency of stated facts** — a count, a rule, or a limit stated in one file must match anywhere else it's restated. ("`≤8` concurrent subagents, one per category" against a category list of nine" is exactly this kind of bug — caught by reading, not by running anything.)
+- **Cross-file consistency of stated facts** — a count, a rule, or a limit stated in one file must match anywhere else it's restated. (A stated "`≤8` concurrent subagents, one per category" against a category list of nine is exactly this kind of bug — caught by reading, not by running anything.)
 
 If none of this exists yet — no script, no CI step, nothing that runs these checks mechanically — that absence **is finding #1**, same as "no working verification command" is for a code repo. Frame it the same way: establishing this baseline should be the first plan, ahead of anything else, because every later plan needs a verification gate to point at.
 
