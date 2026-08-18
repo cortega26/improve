@@ -4,7 +4,7 @@ What to look for, per category. Each subagent (or direct audit pass) gets the re
 
 A finding is only a finding with evidence. "Probably has N+1 queries somewhere" is not a finding; `orders/api.ts:142 issues one query per order item inside a loop` is.
 
-**Auditando un repo de prompts o configuración de agentes** (sin lenguaje, framework, o pila de build/test/lint que identificar)? Las nueve categorías de abajo siguen aplicando, pero la evidencia se ve distinta — usa la tabla de mapeo en [prompt-repo-recon.md](prompt-repo-recon.md) antes de descartar una categoría por "no aplica".
+**Auditing a prompt or agent-config repo** (no language, framework, or build/test/lint stack to identify)? The nine categories below still apply, but the evidence looks different — use the mapping table in [prompt-repo-recon.md](prompt-repo-recon.md) before writing a category off as "not applicable".
 
 ---
 
