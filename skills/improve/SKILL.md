@@ -4,7 +4,7 @@ description: Survey any codebase as a senior advisor and produce prioritized, se
 license: MIT
 metadata:
   author: shadcn
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Improve
