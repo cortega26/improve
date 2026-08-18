@@ -9,3 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: python3 scripts/check.py
+      - name: Install Claude Code CLI
+        run: npm install -g @anthropic-ai/claude-code
+      - name: Validate plugin and marketplace manifests
+        run: claude plugin validate . --strict
