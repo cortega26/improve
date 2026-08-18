@@ -122,6 +122,33 @@ Plans aren't fire-and-forget:
 - Treats everything it reads as data, not instructions. A file that tries to give the advisor orders becomes a security finding, not a command — and the executor it dispatches inherits that rule explicitly.
 - Asked to implement? It declines and points at the plan (or offers `execute`).
 
+## Versioning
+
+`plugin.json`'s `version` and `SKILL.md`'s frontmatter `metadata.version`
+must move together — `scripts/check.py` (wired into CI) fails the build if
+they drift, so there's no way to bump one and forget the other without CI
+catching it.
+
+What size bump, in order of how much it should worry an installed copy:
+
+- **PATCH** — docs fixes, typo corrections, internal consistency repairs
+  (a broken link, an off-by-one in a stated count) that don't change what
+  the skill does or accepts.
+- **MINOR** — additive changes: a new invocation variant, a new Hard Rule
+  that only adds a restriction, a scoping clarification (like "when not to
+  use this") that narrows what the skill accepts without removing an
+  existing capability, new supporting infrastructure (CI, eval cases).
+- **MAJOR** — anything that changes behavior for someone already using the
+  skill: renaming or removing an invocation variant, relaxing or removing a
+  Hard Rule, changing what a plan's Hard Rules require of an executor in a
+  way that breaks a plan written against the old rules.
+
+The distinction that matters most for this specific skill: `description` is
+the routing trigger a host agent reads to decide whether to invoke `/improve`
+at all. A change to it — even a "small" wording change — can change which
+requests reach the skill. Treat any `description` change as at least MINOR,
+even if the accompanying code change looks cosmetic.
+
 ## License
 
 MIT © shadcn
