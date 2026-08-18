@@ -1,11 +1,13 @@
-# improve
+# improve-cortega26
+
+> Fork of [shadcn/improve](https://github.com/shadcn/improve).
 
 An agent skill that audits any codebase and writes implementation plans for other agents to execute.
 
 The idea: use your most capable model for the part where intelligence compounds — understanding the codebase, judging what's worth doing, writing the spec — and hand execution to cheaper models. The skill never implements anything itself. The plan is the product.
 
 ```
-you          →  /improve                    (expensive model, advises)
+you          →  /improve-cortega26          (expensive model, advises)
 plans/       →  001-fix-n-plus-one.md       (self-contained specs)
 other agent  →  implements, tests, ships    (cheap model, executes)
 ```
@@ -13,14 +15,14 @@ other agent  →  implements, tests, ships    (cheap model, executes)
 ## Install
 
 ```bash
-npx skills add shadcn/improve
+npx skills add cortega26/improve
 ```
 
 Or, as a Claude Code plugin:
 
 ```bash
-/plugin marketplace add shadcn/improve
-/plugin install improve@improve
+/plugin marketplace add cortega26/improve
+/plugin install improve-cortega26@improve-cortega26
 ```
 
 Works in any agent that supports [Agent Skills](https://agentskills.io) format. The plans it writes are plain markdown, so any agent (or human) can pick them up.
@@ -28,25 +30,25 @@ Works in any agent that supports [Agent Skills](https://agentskills.io) format. 
 ## Usage
 
 ```
-/improve                        full audit → prioritized findings → plans
-/improve quick                  cheap pass: hotspots, top findings only
-/improve deep                   exhaustive: every package, every category
-/improve security               focused audit (also: perf, tests, bugs, ...)
-/improve branch                 audit only what the current branch changes
-/improve next                   feature suggestions — where to take the project
-/improve plan <description>     skip the audit, spec one thing
-/improve review-plan <file>     critique and tighten an existing plan
-/improve execute <plan>         dispatch a cheaper executor, review its work
-/improve reconcile              refresh the backlog: verify, unblock, retire
-/improve ... --issues           also publish plans as GitHub issues
+/improve-cortega26                        full audit → prioritized findings → plans
+/improve-cortega26 quick                  cheap pass: hotspots, top findings only
+/improve-cortega26 deep                   exhaustive: every package, every category
+/improve-cortega26 security               focused audit (also: perf, tests, bugs, ...)
+/improve-cortega26 branch                 audit only what the current branch changes
+/improve-cortega26 next                   feature suggestions — where to take the project
+/improve-cortega26 plan <description>     skip the audit, spec one thing
+/improve-cortega26 review-plan <file>     critique and tighten an existing plan
+/improve-cortega26 execute <plan>         dispatch a cheaper executor, review its work
+/improve-cortega26 reconcile              refresh the backlog: verify, unblock, retire
+/improve-cortega26 ... --issues           also publish plans as GitHub issues
 ```
 
 ## When not to use it
 
-`improve` audits a repository at rest and writes specs. For reviewing a diff or
+`improve-cortega26` audits a repository at rest and writes specs. For reviewing a diff or
 a PR, use a code-review skill. For implementing, use an implementation agent —
 or hand it one of the plans this wrote. For planning something you have already
-scoped, a general planning skill is cheaper. `improve branch` is the one
+scoped, a general planning skill is cheaper. `improve-cortega26 branch` is the one
 in-flight case, and even there the output is findings and plans, not line
 comments.
 
@@ -54,13 +56,13 @@ comments.
 
 A typical first run, start to finish:
 
-1. Open your agent in the repo and run `/improve` (or `/improve quick` to keep it cheap).
+1. Open your agent in the repo and run `/improve-cortega26` (or `/improve-cortega26 quick` to keep it cheap).
 2. It maps the repo, audits it, and comes back with a findings table. Reply with the ones you want planned — "plan 1, 3 and 5".
 3. Plans land in `plans/` — one file each, plus an index with the recommended order. Read them; they're meant to be reviewed.
-4. Hand a plan to any agent ("implement plans/001-*.md"), or let the skill run it: `/improve execute 001`. It dispatches a cheaper model in an isolated worktree, reviews the diff against the plan, and reports back with a verdict. Merging stays up to you.
-5. Next session, run `/improve reconcile` to clean up the backlog: verify what landed, refresh what drifted, unblock what got stuck.
+4. Hand a plan to any agent ("implement plans/001-*.md"), or let the skill run it: `/improve-cortega26 execute 001`. It dispatches a cheaper model in an isolated worktree, reviews the diff against the plan, and reports back with a verdict. Merging stays up to you.
+5. Next session, run `/improve-cortega26 reconcile` to clean up the backlog: verify what landed, refresh what drifted, unblock what got stuck.
 
-Before a PR, `/improve branch` does the same thing scoped to just what your branch changes.
+Before a PR, `/improve-cortega26 branch` does the same thing scoped to just what your branch changes.
 
 ## Example
 
@@ -144,7 +146,7 @@ What size bump, in order of how much it should worry an installed copy:
   way that breaks a plan written against the old rules.
 
 The distinction that matters most for this specific skill: `description` is
-the routing trigger a host agent reads to decide whether to invoke `/improve`
+the routing trigger a host agent reads to decide whether to invoke `/improve-cortega26`
 at all. A change to it — even a "small" wording change — can change which
 requests reach the skill. Treat any `description` change as at least MINOR,
 even if the accompanying code change looks cosmetic.
@@ -152,3 +154,4 @@ even if the accompanying code change looks cosmetic.
 ## License
 
 MIT © shadcn
+MIT © 2026 Carlos Ortega (fork-specific changes)
