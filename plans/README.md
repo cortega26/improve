@@ -273,6 +273,55 @@ antes de aprobar— lo resolvió sin conflictos. Verificado con `python3
 scripts/check.py` (`check5: version agrees: '1.1.0'`) y `claude plugin
 validate . --strict` después del rebase, ambos en verde.
 
+## Nota sobre 013 — descartado, la premisa no sobrevive a la verificación
+
+El candidato traía confianza MED explícita ("verificar primero el esquema de
+hooks") porque la idea — un hook `PreToolUse` que bloquee `Write`/`Edit` fuera
+de `plans/` para reforzar mecánicamente la Hard Rule 1 — depende de que el
+hook pueda saber que **la skill `/improve` es la que está corriendo en ese
+momento**. Se investigó antes de escribir el plan (no se asumió) y esa
+premisa no se sostiene, por dos vías independientes:
+
+- **Los hooks son ciegos a qué skill los disparó.** El payload documentado de
+  entrada de un hook (`session_id`, `tool_name`, `tool_input`,
+  `tool_response`/`cwd`) no trae ningún campo de "skill activa", y no podría:
+  una skill es texto de prompt inyectado en el contexto del modelo, no un
+  límite de ejecución que el runtime de hooks pueda observar. Un `Write` desde
+  "el hilo principal corriendo `/improve`" es indistinguible, a nivel de tool
+  call, de cualquier otro `Write`.
+- **Dónde se podría desplegar el hook, y por qué las tres opciones fallan
+  igual**: `.claude/settings.json` de este repo solo dispara al trabajar
+  *sobre* improve-skill — alcance equivocado, no protege a quien instala el
+  plugin. `~/.claude/settings.json` bloquearía escrituras fuera de `plans/`
+  en *todos* los repos del usuario, para siempre. Un hook embebido en el
+  plugin (`hooks/hooks.json` en la raíz del plugin, confirmado como mecanismo
+  real y separado de `settings.json`) sí alcanza a cualquier repo donde el
+  plugin esté habilitado — pero dispara en **cada** `Write`/`Edit` de **cada**
+  sesión con el plugin habilitado, sin importar si `/improve` está corriendo
+  o no. Para un fork cuya fase C busca posicionamiento público (candidato
+  014), esa es la peor opción de las tres: rompería la experiencia normal de
+  edición de cualquier instalador que no esté usando `/improve` en ese
+  momento.
+- Un archivo-marcador que la skill escriba al entrar en fase advisor y borre
+  al salir (para que el hook lea "¿existe el marcador?") no resuelve nada: el
+  marcador lo controla el mismo modelo que la regla busca contener, así que
+  deja de ser una defensa contra un modelo que decide ignorar la Hard Rule 1
+  — solo protege contra un descuido accidental, y con una capa extra de
+  complejidad y estados de carrera que no se justifica para eso.
+- `permissions.deny` con un patrón tipo `Edit(./skills/**)` falla por el
+  mismo motivo exacto: tampoco puede condicionarse a qué skill está activa.
+
+**Decisión**: no se escribe plan 013. La Hard Rule 1 sigue siendo una regla
+de prompt, reforzada solo por la revisión humana en `execute` (que ya
+rechaza cualquier diff fuera de alcance, según Hard Rule del propio
+workflow) — no por un control mecánico a nivel de sandbox.
+
+**Deferred:** si en el futuro el payload de entrada de un hook incorpora un
+campo de identidad de skill (o el runtime de hooks gana un tercer eje de
+matcher aparte de tool/evento), reabrir este candidato — en ese momento sí
+sería viable un hook con alcance correcto y sin bloquear el uso normal del
+plugin.
+
 ## Orden recomendado para la fase B
 
 Los tres son independientes y de esfuerzo S. Sugerencia: **006 primero** (es el
@@ -316,7 +365,7 @@ arrancan en 009.
 | 010 | Perfil de recon para repos de prompts/agentes | **DONE** (mergeado en `main` en `281903a`). Nuevo `references/prompt-repo-recon.md`, enganchado desde `SKILL.md` Fase 1 y `audit-playbook.md` — ver Notas |
 | 011 | Suite de evals propia | **DONE** (mergeado en `main` en `a6ae18a`). CI extendida con `claude plugin validate --strict`; esqueleto de `evals/` escrito pero **no verificado** (gate de early access) — ver Notas |
 | 012 | Política de versionado y release; bump coordinado `plugin.json` ↔ frontmatter | **DONE** (mergeado en `main` en `b752b55`). Bump a `1.1.0` en ambos archivos, sección `## Versioning` en README — ver Notas |
-| 013 | Refuerzo mecánico de "nunca edita código" (hook `PreToolUse`) | Confianza MED: verificar primero el esquema de hooks. Defensa en profundidad para un solo host — el README promete portabilidad a cualquier host Agent Skills, así que **no** reemplaza la regla en prompt |
+| 013 | Refuerzo mecánico de "nunca edita código" (hook `PreToolUse`) | **DESCARTADO** — investigado, no viable: los hooks no pueden condicionarse a qué skill está activa, en ningún punto de despliegue (repo-local, global, ni hook embebido en el plugin) — ver Notas |
 | 014 | Renombre y posicionamiento del fork | `plugin.json:name` y el `name:` del frontmatter son el namespace de invocación. Ya falló en la práctica: una copia de junio en `~/.claude/skills/improve` le ganó al repo auditado |
 
 Obligación de licencia para toda la fase C: `LICENSE.md` conserva `MIT © shadcn`.
