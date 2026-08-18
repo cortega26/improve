@@ -377,7 +377,30 @@ plan 015 chico, a decidir con el usuario.
 **Deferred:** actualizar el regex de ambos graders (y opcionalmente el
 título de `evals/README.md`) para reconocer `improve-cortega26` en vez de
 (o además de) `improve`, en cuanto se escriba el próximo plan chico —
-desbloqueado ahora mismo, no depende de nada más.
+desbloqueado ahora mismo, no depende de nada más. **Resuelto por el plan
+015** (ver su nota abajo).
+
+## Nota sobre 015 — aprobado, limpieza chica sin sorpresas
+
+Mismo problema sistémico de base desactualizada (worktree cortado contra
+`5f9f6d5` en vez de `main` en `47294f5`), resuelto igual: cero overlap real
+entre lo que 015 toca (`evals/`, una línea de `README.md`) y el único commit
+que `main` había avanzado (`47294f5`, que solo tocó `plans/015-*.md` y
+`plans/README.md`) — rebase limpio, sin conflictos.
+
+Alcance limpio: exactamente los 4 archivos planeados. Diff verificado
+palabra por palabra contra el texto objetivo del plan — sin desviaciones,
+sin juicio de por medio esta vez. Los 8 criterios de done se re-verificaron
+de forma independiente contra el worktree y de nuevo contra `main` tras el
+merge fast-forward (`95e72bf`), incluyendo el chequeo de sanity del regex
+nuevo (`re.search` contra ambas formas de invocación, calificada y sin
+calificar) — todos en verde.
+
+Con esto quedan resueltos los dos diferidos concretos que dejó la revisión
+de 014 (regex de los graders y redacción de copyright). Los dos diferidos
+restantes de 015 (prosa genérica "the improve skill" en dos archivos de
+`references/`, y verificación real contra `claude plugin eval` una vez
+salga de early access) siguen abiertos — ninguno bloquea nada.
 
 ## Orden recomendado para la fase B
 
@@ -430,7 +453,7 @@ usuario.
 | 012 | Política de versionado y release; bump coordinado `plugin.json` ↔ frontmatter | **DONE** (mergeado en `main` en `b752b55`). Bump a `1.1.0` en ambos archivos, sección `## Versioning` en README — ver Notas |
 | 013 | Refuerzo mecánico de "nunca edita código" (hook `PreToolUse`) | **DESCARTADO** — investigado, no viable: los hooks no pueden condicionarse a qué skill está activa, en ningún punto de despliegue (repo-local, global, ni hook embebido en el plugin) — ver Notas |
 | 014 | Renombre y posicionamiento del fork | **DONE** (mergeado en `main` en `4d80e51`, fast-forward). Namespace pasa a `improve-cortega26` en `plugin.json`/`marketplace.json`/`SKILL.md`; URLs a `cortega26/improve`; atribución original (`shadcn`) preservada en `author` y en `LICENSE.md`. Ver Notas |
-| 015 | Arreglar graders de `evals/` y redacción de licencia tras el rename | **TODO** — hallazgo post-ejecución de 014, no uno de los seis originales. Plan escrito (`plans/015-arreglar-graders-tras-el-rename.md`), pendiente de despacho |
+| 015 | Arreglar graders de `evals/` y redacción de licencia tras el rename | **DONE** (mergeado en `main` en `95e72bf`, fast-forward). Regex de ambos graders y título de `evals/README.md` actualizados a `improve-cortega26`; redacción de copyright en `README.md` alineada con `LICENSE.md`. Ver Notas |
 
 Obligación de licencia para toda la fase C: `LICENSE.md` conserva `MIT © shadcn`.
 Se **agrega** una línea de copyright propia, no se reemplaza la existente. Si se
