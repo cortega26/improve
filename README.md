@@ -154,4 +154,4 @@ even if the accompanying code change looks cosmetic.
 ## License
 
 MIT © shadcn
-MIT © 2026 Carlos Ortega (fork-specific changes)
+Portions © 2026 Carlos Ortega (cortega26 fork)
