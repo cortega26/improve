@@ -1,14 +1,14 @@
 {
-  "name": "improve",
+  "name": "improve-cortega26",
   "owner": {
-    "name": "shadcn"
+    "name": "cortega26"
   },
   "metadata": {
     "description": "Claude marketplace catalog for the improve plugin."
   },
   "plugins": [
     {
-      "name": "improve",
+      "name": "improve-cortega26",
       "source": "./"
     }
   ]
