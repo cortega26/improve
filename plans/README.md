@@ -430,6 +430,7 @@ usuario.
 | 012 | Política de versionado y release; bump coordinado `plugin.json` ↔ frontmatter | **DONE** (mergeado en `main` en `b752b55`). Bump a `1.1.0` en ambos archivos, sección `## Versioning` en README — ver Notas |
 | 013 | Refuerzo mecánico de "nunca edita código" (hook `PreToolUse`) | **DESCARTADO** — investigado, no viable: los hooks no pueden condicionarse a qué skill está activa, en ningún punto de despliegue (repo-local, global, ni hook embebido en el plugin) — ver Notas |
 | 014 | Renombre y posicionamiento del fork | **DONE** (mergeado en `main` en `4d80e51`, fast-forward). Namespace pasa a `improve-cortega26` en `plugin.json`/`marketplace.json`/`SKILL.md`; URLs a `cortega26/improve`; atribución original (`shadcn`) preservada en `author` y en `LICENSE.md`. Ver Notas |
+| 015 | Arreglar graders de `evals/` y redacción de licencia tras el rename | **TODO** — hallazgo post-ejecución de 014, no uno de los seis originales. Plan escrito (`plans/015-arreglar-graders-tras-el-rename.md`), pendiente de despacho |
 
 Obligación de licencia para toda la fase C: `LICENSE.md` conserva `MIT © shadcn`.
 Se **agrega** una línea de copyright propia, no se reemplaza la existente. Si se
